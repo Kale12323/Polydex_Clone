@@ -1,0 +1,12 @@
+npm notice run polydex_clone@1.0.0 start
+npm notice run electron .
+
+[18912:0830/170035.649:ERROR:net\disk_cache\cache_util_win.cc:25] Unable to move the cache: Access is denied. (0x5)
+[18912:0830/170035.649:ERROR:net\disk_cache\cache_util_win.cc:25] Unable to move the cache: Access is denied. (0x5)
+[18912:0830/170035.649:ERROR:net\disk_cache\cache_util_win.cc:25] Unable to move the cache: Access is denied. (0x5)
+[18912:0830/170035.651:ERROR:net\disk_cache\disk_cache.cc:290] Unable to create cache
+[18912:0830/170035.651:ERROR:gpu\ipc\host\gpu_disk_cache.cc:737] Gpu Cache Creation failed: -2
+[18912:0830/170035.651:ERROR:net\disk_cache\disk_cache.cc:290] Unable to create cache
+[18912:0830/170035.651:ERROR:gpu\ipc\host\gpu_disk_cache.cc:737] Gpu Cache Creation failed: -2
+[18912:0830/170035.652:ERROR:net\disk_cache\disk_cache.cc:290] Unable to create cache
+[18912:0830/170035.652:ERROR:gpu\ipc\host\gpu_disk_cache.cc:737] Gpu Cache Creation failed: -2

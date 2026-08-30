@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>POLYDEX — Material Intelligence Workbench</title>
+<link rel="stylesheet" href="./src/css/style.css">
+<link rel="stylesheet" href="./node_modules/xterm/css/xterm.css">
+</head>
+<body>
+
+<!-- ============ WINDOW TITLEBAR (Frameless Window Controls) ============ -->
+<header class="titlebar">
+  <div class="titlebar-drag">
+    <span class="titlebar-logo">POLYDEX</span>
+    <span class="titlebar-title">Material Intelligence Workbench</span>
+  </div>
+  <div class="titlebar-controls">
+    <button class="titlebar-btn" id="btn-min" title="Minimize" aria-label="Minimize">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </button>
+    <button class="titlebar-btn" id="btn-max" title="Maximize" aria-label="Maximize">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
+    </button>
+    <button class="titlebar-btn close" id="btn-close" title="Close" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="app">
+
+  <!-- ============ LEFT RAIL (icon-only) ============ -->
+  <aside class="rail" aria-label="Primary navigation">
+    <button class="rail-item brand" title="Polydex" aria-label="Polydex">
+      <span class="rail-icon brand-mark"></span>
+    </button>
+    <div class="rail-sep"></div>
+    <button class="rail-item active" data-tab="tab-index" title="Overview" aria-label="Overview">
+      <svg class="rail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+    </button>
+    <button class="rail-item" data-tab="tab-library" title="Library" aria-label="Library">
+      <svg class="rail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v3"/><path d="M21 16V8a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8"/><path d="M3 8h18"/></svg>
+    </button>
+    <button class="rail-item" data-tab="tab-autotag" title="Auto-Tag" aria-label="Auto-Tag">
+      <svg class="rail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+    </button>
+<button class="rail-item" data-tab="tab-import" title="Import" aria-label="Import">
+      <svg class="rail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="6" x2="12" y2="18"/><polyline points="16 12 12 18 8 12"/></svg>
+    </button>
+    <div class="rail-sep"></div>
+    <button class="rail-item" id="btn-terminal" title="Terminal" aria-label="Terminal">
+      <svg class="rail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+    </button>
+    <button class="rail-item" id="rail-settings" title="Settings" aria-label="Settings">
+      <svg class="rail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
+    <div class="rail-spacer"></div>
+    <button class="rail-item user" title="Account" aria-label="Account">
+      <svg class="rail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+    </button>
+  </aside>
+
+  <!-- ============ SECONDARY PANEL (filters/context) ============ -->
+  <aside class="panel panel-secondary" aria-label="Filters">
+    <div class="panel-header">
+      <h3 class="panel-title">Filters</h3>
+      <button class="panel-btn" id="panel-search-toggle" title="Search" aria-label="Search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+    </div>
+    <div class="panel-content" id="panel-content">
+      <!-- Dynamic content based on active tab -->
+    </div>
+  </aside>
+
+  <!-- ============ MAIN CONTENT AREA ============ -->
+  <main class="main" role="main">
+    <div class="main-header">
+      <div class="main-title-group">
+        <h1 class="main-title" id="main-title">Overview</h1>
+        <span class="main-subtitle" id="main-subtitle">Material Intelligence Workbench</span>
+      </div>
+      <div class="main-actions">
+        <button class="main-btn ghost" id="main-refresh" title="Refresh" aria-label="Refresh">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><polyline points="23 20 23 14 17 14"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+        </button>
+        <button class="main-btn ghost" id="main-settings" title="Settings" aria-label="Settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="view-container">
+      <section class="view-panel active" id="tab-index" role="tabpanel" aria-label="Overview">
+        <div class="overview-content">
+          <p class="overview-lede">Polydex indexes every surface you own — <strong>wood, metal, fabric, stone</strong> — auto-tags it, and puts it one search away. Your textures, your drive, your rules.</p>
+          <div class="overview-chips">
+            <span class="chip hot">8 sample assets</span>
+            <span class="chip">7 categories</span>
+            <span class="chip">Auto-tagging</span>
+            <span class="chip">4K native</span>
+            <span class="chip">Offline first</span>
+          </div>
+          <div class="overview-figure">
+            <svg viewBox="0 0 900 340" preserveAspectRatio="none" aria-hidden="true">
+              <rect width="900" height="340" class="fig-bg"/>
+              <g class="fig-grid-line" stroke-width="1">
+                <line x1="0" y1="60" x2="900" y2="60"/><line x1="0" y1="120" x2="900" y2="120"/>
+                <line x1="0" y1="180" x2="900" y2="180"/><line x1="0" y1="240" x2="900" y2="240"/>
+                <line x1="0" y1="300" x2="900" y2="300"/>
+                <line x1="150" y1="0" x2="150" y2="340"/><line x1="300" y1="0" x2="300" y2="340"/>
+                <line x1="450" y1="0" x2="450" y2="340"/><line x1="600" y1="0" x2="600" y2="340"/>
+                <line x1="750" y1="0" x2="750" y2="340"/>
+              </g>
+              <rect x="150" y="60" width="300" height="180" fill="none" class="fig-ink-line" stroke-width="1.5"/>
+              <rect x="450" y="120" width="300" height="180" fill="none" class="fig-ink-line" stroke-width="1.5"/>
+              <rect x="240" y="110" width="120" height="90" class="fig-accent-fill"/>
+              <circle cx="600" cy="210" r="46" fill="none" stroke="#ff6b00" stroke-width="1.5"/>
+              <line x1="360" y1="155" x2="554" y2="210" stroke="#ff6b00" stroke-width="1.5" stroke-dasharray="5 4"/>
+              <circle cx="150" cy="60" r="5" fill="#ff6b00"/><circle cx="450" cy="60" r="5" fill="#ff6b00"/>
+              <circle cx="450" cy="300" r="5" fill="#ff6b00"/><circle cx="750" cy="300" r="5" fill="#ff6b00"/>
+              <text x="160" y="52" font-family="Consolas,monospace" font-size="12" class="fig-text">FIG.01 — MATERIAL INDEX SCHEMATIC</text>
+            </svg>
+            <div class="fig-label">Fig. 01 / Index topology</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="view-panel" id="tab-library" role="tabpanel" aria-label="Library">
+        <div class="toolbar-main">
+          <div class="toolbar-cell grow">
+            <label class="sr-only">Quick search</label>
+            <input type="search" id="topSearch" placeholder="Search materials..." aria-label="Quick search">
+          </div>
+          <div class="toolbar-cell">
+            <label class="sr-only">Sort</label>
+            <select id="sortSelect">
+              <option value="name">Name</option>
+              <option value="date">Date</option>
+              <option value="size">Size</option>
+            </select>
+          </div>
+          <button class="btn ghost" id="btnRefresh">Refresh</button>
+          <button class="btn" id="btnSettings">Settings</button>
+        </div>
+
+        <div class="library-grid">
+          <aside class="lib-sidebar" aria-label="Library filters">
+            <div class="side-section">
+              <label class="sr-only">Filter the index</label>
+              <input type="search" id="searchInput" placeholder="Filter the index...">
+            </div>
+            <div class="side-section">
+              <h4>Categories</h4>
+              <ul class="filter-list" id="catList">
+                <li><button data-cat="all" class="active"><span><span class="idx">00</span>All</span></button></li>
+                <li><button data-cat="wood"><span><span class="idx">01</span>Wood</span></button></li>
+                <li><button data-cat="metal"><span><span class="idx">02</span>Metal</span></button></li>
+                <li><button data-cat="fabric"><span><span class="idx">03</span>Fabric</span></button></li>
+                <li><button data-cat="stone"><span><span class="idx">04</span>Stone</span></button></li>
+                <li><button data-cat="plastic"><span><span class="idx">05</span>Plastic</span></button></li>
+                <li><button data-cat="ground"><span><span class="idx">06</span>Ground</span></button></li>
+              </ul>
+            </div>
+            <div class="side-section">
+              <h4>Tags</h4>
+              <div class="tag-cloud" id="tagCloud"></div>
+            </div>
+            <div class="side-section">
+              <h4>Auto-Tag Threshold</h4>
+              <input type="range" id="threshold" min="0" max="100" value="80">
+              <div class="thr-readout">Confidence ≥ <strong id="thresholdValue">80%</strong></div>
+            </div>
+          </aside>
+
+          <div class="asset-grid-wrap">
+            <div class="grid-status">
+              <span>Index / <span id="gridCount">0</span> assets shown</span>
+              <span class="live">● Live</span>
+            </div>
+            <div class="grid" id="assetGrid"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="view-panel" id="tab-autotag" role="tabpanel" aria-label="Auto-Tag">
+        <div class="autotag-view">
+          <div class="autotag-figure">
+            <div class="panel-figure" style="height:280px">
+              <svg viewBox="0 0 900 300" preserveAspectRatio="none" aria-hidden="true">
+                <rect width="900" height="300" class="fig-bg"/>
+                <g class="fig-grid-line" stroke-width="1">
+                  <line x1="0" y1="75" x2="900" y2="75"/><line x1="0" y1="150" x2="900" y2="150"/><line x1="0" y1="225" x2="900" y2="225"/>
+                  <line x1="180" y1="0" x2="180" y2="300"/><line x1="360" y1="0" x2="360" y2="300"/>
+                  <line x1="540" y1="0" x2="540" y2="300"/><line x1="720" y1="0" x2="720" y2="300"/>
+                </g>
+                <circle cx="240" cy="150" r="70" fill="none" class="fig-ink-line" stroke-width="1.5"/>
+                <circle cx="240" cy="150" r="8" fill="#ff6b00"/>
+                <rect x="480" y="90" width="220" height="120" fill="none" class="fig-ink-line" stroke-width="1.5"/>
+                <rect x="480" y="90" width="70" height="30" fill="#ff6b00"/>
+                <line x1="310" y1="150" x2="480" y2="150" class="fig-ink-line" stroke-width="1.5" stroke-dasharray="5 4"/>
+                <text x="492" y="228" font-family="Consolas,monospace" font-size="12" class="fig-text">OUT: oak / wood / rustic</text>
+                <text x="196" y="52" font-family="Consolas,monospace" font-size="12" class="fig-text">IN: tex_0041.png</text>
+              </svg>
+              <div class="fig-label">Fig. 02 / Tag pipeline</div>
+            </div>
+          </div>
+          <div class="autotag-specs">
+            <div class="spec-row"><span>Model</span><span class="val">POLY-ViT / LOCAL</span></div>
+            <div class="spec-row"><span>Categories covered</span><span class="val">7 / 7</span></div>
+            <div class="spec-row"><span>Confidence threshold</span><span class="val" id="thresholdValue2">80%</span></div>
+            <div class="spec-row"><span>Assets re-scanned</span><span class="val">ON REFRESH</span></div>
+            <div class="spec-row last"><span>Manual override</span><span class="val">ALWAYS</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="view-panel" id="tab-import" role="tabpanel" aria-label="Import">
+        <div class="import-view">
+          <div class="toolbar-main">
+            <button class="btn ghost" id="btnPickFolder">Choose folder</button>
+            <div class="toolbar-cell grow">
+              <label class="sr-only">Folder</label>
+              <input type="search" id="importDir" placeholder="No folder selected..." disabled>
+            </div>
+            <div class="toolbar-cell">
+              <label class="sr-only">Local model</label>
+              <select id="ollamaModel"><option value="">— offline —</option></select>
+            </div>
+            <div class="toolbar-cell">
+              <label class="sr-only">Ollama</label>
+              <span class="status-pill" id="ollamaStatus">○ CHECKING</span>
+            </div>
+            <button class="btn ghost" id="btnRescan">Scan</button>
+            <button class="btn" id="btnGenerateAI">Generate with AI</button>
+          </div>
+
+          <div class="toolbar-main import-opts">
+            <div class="toolbar-cell">
+              <label class="sr-only">Separator</label>
+              <select id="optSeparator">
+                <option value="_">Underscore _</option>
+                <option value="-">Hyphen -</option>
+                <option value=" ">Space</option>
+              </select>
+            </div>
+            <div class="toolbar-cell">
+              <label class="sr-only">Case</label>
+              <select id="optCase">
+                <option value="pascal">Pascal Case</option>
+                <option value="snake">snake_case</option>
+                <option value="lower">lower case</option>
+              </select>
+            </div>
+            <div class="toolbar-cell">
+              <label class="sr-only">Map suffix</label>
+              <select id="optMapSuffix">
+                <option value="on">Include</option>
+                <option value="off">Omit</option>
+              </select>
+            </div>
+            <div class="toolbar-cell">
+              <label class="sr-only">Resolution suffix</label>
+              <select id="optResSuffix">
+                <option value="on">Include</option>
+                <option value="off">Omit</option>
+              </select>
+            </div>
+            <div class="toolbar-cell grow">
+              <label class="sr-only">Progress</label>
+              <span class="import-progress" id="importProgress">Idle — choose a folder to begin</span>
+            </div>
+            <button class="btn" id="btnApplyRenames">Apply renames</button>
+            <button class="btn ghost" id="btnOpenFolder">Open folder</button>
+          </div>
+
+          <div class="import-wrap">
+            <div class="grid-status">
+              <span>Import queue / <span id="importCount">0</span> material sets</span>
+              <span class="live" id="importMode">● HEURISTIC</span>
+            </div>
+            <div class="import-table" id="importTable">
+              <div class="grid-empty">Nothing imported yet — choose a texture folder above.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- ============ RIGHT PANEL (inspector/details) ============ -->
+  <aside class="panel panel-inspector" aria-label="Inspector" id="inspector-panel">
+    <div class="panel-header">
+      <h3 class="panel-title">Inspector</h3>
+    </div>
+    <div class="panel-content" id="inspector-content">
+      <div class="inspector-empty">Select an asset to inspect</div>
+    </div>
+  </aside>
+
+</div>
+
+<!-- ============ TERMINAL DRAWER ============ -->
+<div id="terminal-container">
+  <div class="terminal-header">
+    <span class="terminal-title">Terminal</span>
+    <button class="terminal-btn" id="terminal-close" aria-label="Close terminal">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div id="terminal"></div>
+</div>
+
+<!-- ============ MODALS ============ -->
+<div class="modal-overlay" id="settingsModal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle">
+    <div class="modal-header">
+      <h3 class="modal-title" id="settingsModalTitle">Workbench Settings</h3>
+      <button class="modal-close" id="btnCloseSettings" aria-label="Close settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-row">
+        <label for="cfgOllamaUrl">Local Ollama API Endpoint</label>
+        <input type="text" id="cfgOllamaUrl" value="http://localhost:11434">
+      </div>
+      <div class="modal-row">
+        <label for="cfgDefaultWorkflow">Default PBR Workflow</label>
+        <select id="cfgDefaultWorkflow">
+          <option value="metallic">Metallic / Roughness (Standard)</option>
+          <option value="specular">Specular / Glossiness</option>
+          <option value="packed">Packed ORM (Occlusion/Roughness/Metallic)</option>
+        </select>
+      </div>
+      <div class="modal-row">
+        <label for="cfgDefaultRes">Default Texture Resolution</label>
+        <select id="cfgDefaultRes">
+          <option value="4K">4K Ultra HD (4096×4096)</option>
+          <option value="2K">2K Standard (2048×2048)</option>
+          <option value="1K">1K Performance (1024×1024)</option>
+          <option value="8K">8K Master (8192×8192)</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn ghost" id="btnCancelSettings">Cancel</button>
+      <button class="btn" id="btnSaveSettings">Save Settings</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="accountModal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="accountModalTitle">
+    <div class="modal-header">
+      <h3 class="modal-title" id="accountModalTitle">User Account & License</h3>
+      <button class="modal-close" id="btnCloseAccount" aria-label="Close account dialog">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="spec-row"><span>User License</span><span class="val">POLYDEX PRO (STUDIO)</span></div>
+      <div class="spec-row"><span>Local Storage</span><span class="val">OFFLINE / LOCAL DRIVE</span></div>
+      <div class="spec-row"><span>AI Auto-Tagger</span><span class="val">ENABLED (LOCAL ViT)</span></div>
+      <div class="spec-row last"><span>Version</span><span class="val">v1.0.0</span></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" id="btnDoneAccount">Done</button>
+    </div>
+  </div>
+</div>
+
+<script src="./src/js/app.js" defer></script>
+</body>
+</html>

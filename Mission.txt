@@ -1,0 +1,3 @@
+create a desktop app clone of this (https://www.poliigon.com/polydex)
+
+Also add a feature to automatically tag PBR materails
